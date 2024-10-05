@@ -1,0 +1,18 @@
+/* Styles for the content container */
+.content-container {
+    background: rgba(34, 34, 34, 0.6); /* Dark color with increased transparency */
+    color: #66f054; /* White text for contrast */
+    width: 50%; /* 50% of the width */
+    max-width: 800px; /* Maximum width for larger screens */
+    padding: 20px; /* Padding for spacing inside the container */
+    border-radius: 15px; /* Rounded corners */
+    text-align: center; /* Center align text */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    position: absolute; /* Position it absolutely */
+    top: 50%; /* Position from top */
+    left: 50%; /* Position from left */
+    transform: translate(-50%, -50%); /* Center it */
+    z-index: 10; /* Set a higher z-index to ensure it is in front */
+  }
+  
+  

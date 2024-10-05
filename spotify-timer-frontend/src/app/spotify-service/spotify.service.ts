@@ -18,6 +18,15 @@ export class SpotifyService {
     window.location.href = spotifyAuthUrl;
   }
 
+  logout():void {
+    localStorage.removeItem('access_token');
+    window.location.href = 'https://accounts.spotify.com/en/logout';
+  }
+
+  getToken(): string | null {
+    return this.accessToken;
+  }
+
   handleAuthCallback(): void {
     const hash = window.location.hash;
     if (hash) {
