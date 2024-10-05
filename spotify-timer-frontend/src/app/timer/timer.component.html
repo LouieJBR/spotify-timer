@@ -1,6 +1,16 @@
 <div class="timer-container">
-    <h1>Spotify Timer</h1>
-    <p>Time Left: {{ timeInSeconds | date:'mm:ss' }}</p>
-    <button (click)="startTimer()">Start Timer</button>
-    <button (click)="stopTimer()">Stop Timer</button>
+    <div class="timer-display" contenteditable="true" (input)="updateTime($event)" (keydown)="handleKeydown($event)">
+        {{ displayTime }}
+    </div> <!-- Timer display, now editable -->
+
+    <div class="button-container">
+        <button (click)="incrementTime(30)">+30s</button>
+        <button (click)="decrementTime(30)">-30s</button>
+    </div>
+
+        <button class="start-button" (click)="startTimer()">Start Timer</button> <!-- Start button -->
+        <div class="button-container">
+            <button class="stop-button" (click)="stopTimer()">Stop</button> <!-- Stop button -->
+            <button class="reset-button" (click)="resetTimer()">Clear</button> <!-- Reset button -->
+        </div> 
 </div>

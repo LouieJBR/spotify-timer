@@ -40,6 +40,14 @@ export class SpotifyService {
     }
   }
 
+  getUserInfo(): Promise<any> {
+    return fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`
+      }
+    }).then(response => response.json());
+  }
+
   async getPlaybackState(): Promise<any> {
     const response = await fetch('https://api.spotify.com/v1/me/player', {
       headers: {

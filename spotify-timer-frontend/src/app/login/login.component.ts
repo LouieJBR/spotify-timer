@@ -11,12 +11,28 @@ import { NgIf } from '@angular/common';
 })
 export class LoginComponent {
   isLoggedIn: boolean = false; // Track the login state
+  displayName: string | null = null; // Property to store the user's display name
+  isHovered: boolean = false; // New property for hover state
 
   constructor(private spotifyService: SpotifyService) {}
 
   ngOnInit(): void {
     this.spotifyService.handleAuthCallback(); // Invoke the method to handle auth callback
     this.isLoggedIn = this.spotifyService.getToken() !== null; // Set login state on init
+   
+    if (this.isLoggedIn) {
+      this.getUserInfo(); // Fetch user info if logged in
+    }
+  
+  }
+
+  async getUserInfo(): Promise<void> {
+    try {
+      const userInfo = await this.spotifyService.getUserInfo();
+      this.displayName = userInfo.display_name; // Store the display name
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   }
 
   loginWithSpotify(): void {
@@ -27,4 +43,5 @@ export class LoginComponent {
     this.spotifyService.logout();
     this.isLoggedIn = false; // Update the login state on logout
   }
+  
 }

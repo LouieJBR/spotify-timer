@@ -2,7 +2,10 @@
     <button *ngIf="!isLoggedIn" (click)="loginWithSpotify()">
         <h3>Login with Spotify</h3>
     </button>
-    <button *ngIf="isLoggedIn" (click)="logout()">
-        <h3>Logout</h3>
+    <button *ngIf="isLoggedIn" (click)="logout()" (mouseover)="isHovered = true" (mouseout)="isHovered = false">        
+        <h3>
+            <span *ngIf="!isHovered" class="usernameDisplay">{{ displayName }}</span>
+            <span *ngIf="isHovered">Logout</span>
+        </h3>
     </button>
 </div>

@@ -1,35 +1,89 @@
-import { Component, OnInit } from '@angular/core';
-import { SpotifyService } from '../spotify-service/spotify.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-timer',
+  standalone: true,
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css']
 })
-export class TimerComponent implements OnInit {
-  timeInSeconds: number = 600; // 10 minutes as an example
-  timer: any;
+export class TimerComponent {
+  displayTime: string = '00:00'; // Displayed timer time
+  totalSeconds: number = 0; // Total seconds in timer
+  timerInterval: any; // To hold the timer interval
+  isRunning: boolean = false; // To track if the timer is running
 
-  constructor(private spotifyService: SpotifyService) {}
+  // Update time based on user input
+  updateTime(event: Event): void {
+    const input = (event.target as HTMLElement).innerText; // Get the input from innerText
+    const timeParts = input.split(':');
 
-  ngOnInit(): void {}
+    if (timeParts.length === 2) {
+      const minutes = parseInt(timeParts[0], 10);
+      const seconds = parseInt(timeParts[1], 10);
 
-  // Start the timer and play a song
-  startTimer(): void {
-    const songUri = 'spotify:track:your_song_uri'; // Replace with an actual Spotify URI
-    this.spotifyService.playSong(songUri).then(() => {
-      this.timer = setInterval(() => {
-        this.timeInSeconds--;
-        if (this.timeInSeconds <= 0) {
-          this.stopTimer();
-        }
-      }, 1000);
-    });
+      // Check if the input is valid
+      if (!isNaN(minutes) && !isNaN(seconds)) {
+        this.totalSeconds = minutes * 60 + seconds;
+        this.displayTime = this.formatTime(this.totalSeconds);
+      }
+    }
   }
 
-  // Stop the timer and pause Spotify playback
+  // Handle keyboard events for 'Enter' and 'Escape' keys
+  handleKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent newline character
+      this.startTimer();
+    } else if (event.key === 'Escape') {
+      (event.target as HTMLElement).blur(); // Unfocus input
+    }
+  }
+
+  // Increment the time
+  incrementTime(seconds: number): void {
+    this.totalSeconds += seconds;
+    this.displayTime = this.formatTime(this.totalSeconds);
+  }
+
+  // Decrement the time
+  decrementTime(seconds: number): void {
+    this.totalSeconds = Math.max(0, this.totalSeconds - seconds); // Prevent negative time
+    this.displayTime = this.formatTime(this.totalSeconds);
+  }
+
+  // Start the timer logic
+  startTimer(): void {
+    if (this.isRunning) return; // Prevent starting if already running
+
+    this.isRunning = true; // Set timer as running
+    this.timerInterval = setInterval(() => {
+      if (this.totalSeconds > 0) {
+        this.totalSeconds--;
+        this.displayTime = this.formatTime(this.totalSeconds);
+      } else {
+        this.stopTimer(); // Stop when it reaches zero
+      }
+    }, 1000); // Update every second
+  }
+
+  // Stop the timer logic
   stopTimer(): void {
-    clearInterval(this.timer);
-    this.spotifyService.pausePlayback();
+    clearInterval(this.timerInterval); // Clear the interval
+    this.isRunning = false; // Reset running status
+    console.log('Timer stopped!'); // Optional: log when timer stops
+  }
+
+  // Reset the timer
+  resetTimer(): void {
+    this.stopTimer(); // Ensure timer is stopped
+    this.totalSeconds = 0; // Reset to zero
+    this.displayTime = this.formatTime(this.totalSeconds); // Update display
+  }
+
+  // Format time in MM:SS format
+  formatTime(totalSeconds: number): string {
+    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${minutes}:${seconds}`;
   }
 }
