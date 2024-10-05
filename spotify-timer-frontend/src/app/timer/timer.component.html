@@ -1,1 +1,6 @@
-<p>timer works!</p>
+<div class="timer-container">
+    <h1>Spotify Timer</h1>
+    <p>Time Left: {{ timeInSeconds | date:'mm:ss' }}</p>
+    <button (click)="startTimer()">Start Timer</button>
+    <button (click)="stopTimer()">Stop Timer</button>
+</div>
