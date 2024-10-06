@@ -1,22 +1,23 @@
-// content.component.ts
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TimerComponent } from '../timer/timer.component';
 import { LoginComponent } from '../login/login.component';
 import { SpotifyService } from '../spotify-service/spotify.service';
-import { NgFor } from '@angular/common';
-import { CurrentTrackComponent } from '../current-track/current-track.component';
+import { NgFor, NgIf } from '@angular/common';
 import { Track } from '../spotify-service/spotify.service';
+
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [LoginComponent, TimerComponent, NgFor, CurrentTrackComponent], // Ensure all are standalone  standalone: true,
+  imports: [LoginComponent, TimerComponent, NgFor, NgIf], // Remove CurrentTrackComponent from imports
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent {
+export class ContentComponent implements OnInit {
   playlists: { id: string; name: string }[] = [];
   selectedPlaylistTracks: Track[] = []; // To store the selected playlist tracks
+  currentTrackIndex = -1; // Track index
+  currentTrack: Track | null = null; // Current track information
+  isPlaying = false; // Playback state
 
   constructor(private spotifyService: SpotifyService) {}
 
@@ -39,11 +40,51 @@ export class ContentComponent {
     const selectedValue = target.value; // Get the selected value
     console.log(selectedValue);
     // Now load the tracks for the selected playlist
-    await this.loadTracksFromSelectedPlaylists(selectedValue);}
+    await this.loadTracksFromSelectedPlaylists(selectedValue);
+  }
 
-async loadTracksFromSelectedPlaylists(selectedValue: string) {
-  this.selectedPlaylistTracks = await this.spotifyService.loadTracksFromPlaylist(selectedValue);
-  console.log("LoadedPlaylistTracks:", this.selectedPlaylistTracks);
+  async loadTracksFromSelectedPlaylists(selectedValue: string) {
+    this.selectedPlaylistTracks = await this.spotifyService.loadTracksFromPlaylist(selectedValue);
+    console.log("Loaded Playlist Tracks:", this.selectedPlaylistTracks);
+    if (this.selectedPlaylistTracks.length > 0) {
+      this.loadNextTrack(); // Load the first track if available
+    }
+  }
+
+  // Method to load the next track
+  loadNextTrack() {
+    if (this.selectedPlaylistTracks.length > 0 && this.currentTrackIndex < this.selectedPlaylistTracks.length - 1) {
+      this.currentTrackIndex++;
+      this.currentTrack = this.selectedPlaylistTracks[this.currentTrackIndex];
+      this.playCurrentTrack();
+    } else {
+      console.log('No more tracks to play');
+    }
+  }
+
+  // Method to play the current track
+  async playCurrentTrack() {
+    if (this.currentTrack) {
+      await this.spotifyService.playSong(this.currentTrack.uri);
+      this.isPlaying = true;
+    }
+  }
+
+  // Method to pause playback
+  async pausePlayback() {
+    await this.spotifyService.pausePlayback();
+    this.isPlaying = false;
+  }
+
+  // Method to handle Next button click
+  onNext() {
+    this.loadNextTrack();
+  }
+
+  get currentTrackArtists(): string {
+    return this.currentTrack?.artists.map((artist: any) => artist.name).join(', ') || '';
+  }
+get currentTrackAlbum(): string {
+  return this.currentTrack?.album || '';
 }
-  
 }

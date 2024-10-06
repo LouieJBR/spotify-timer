@@ -10,6 +10,7 @@ export interface SpotifyUser {
 export interface Track {
   uri: string;
   name: string;
+  album: string
   artists: { name: string }[];
 }
 
@@ -106,6 +107,7 @@ export class SpotifyService {
       return data.items.map((item: any) => ({
         uri: item.track.uri,
         name: item.track.name,
+        album: item.track.album.name,
         artists: item.track.artists
       }));
     } catch (error) {

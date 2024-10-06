@@ -9,5 +9,11 @@
             <option *ngFor="let playlist of playlists" [value]="playlist.id">{{ playlist.name }}</option>
         </select>        
     </div>
-    <app-current-track [tracks]="selectedPlaylistTracks"></app-current-track>
+    <div class="glass-container" *ngIf="currentTrack">
+        <div class="track-container"> 
+            <h1>{{ currentTrack.name }}</h1>
+            <h2>{{ currentTrackAlbum }}</h2>
+            <h3>{{ currentTrackArtists }}</h3>
+        </div>    
+    </div>
 </div>
