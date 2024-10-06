@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../spotify-service/spotify.service';
 import { NgIf } from '@angular/common';
 
@@ -9,10 +9,10 @@ import { NgIf } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  isLoggedIn: boolean = false; // Track the login state
+export class LoginComponent implements OnInit {
+  isLoggedIn = false; // Track the login state
   displayName: string | null = null; // Property to store the user's display name
-  isHovered: boolean = false; // New property for hover state
+  isHovered = false; // New property for hover state
 
   constructor(private spotifyService: SpotifyService) {}
 

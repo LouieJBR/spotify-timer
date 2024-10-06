@@ -1,6 +1,28 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
+interface SpotifyUser {
+  display_name: string;
+  email: string;
+  id: string;
+  // Add other fields as necessary
+}
+
+interface PlaybackState {
+  is_playing: boolean;
+  item: {
+    name: string;
+    artists: { name: string }[];
+    // Add other fields as necessary
+  };
+  device: {
+    id: string;
+    name: string;
+    // Add other fields as necessary
+  };
+  // Add other fields as necessary
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +62,8 @@ export class SpotifyService {
     }
   }
 
-  getUserInfo(): Promise<any> {
+  // Updated to return a Promise of SpotifyUser
+  getUserInfo(): Promise<SpotifyUser> {
     return fetch('https://api.spotify.com/v1/me', {
       headers: {
         'Authorization': `Bearer ${this.accessToken}`
@@ -48,7 +71,8 @@ export class SpotifyService {
     }).then(response => response.json());
   }
 
-  async getPlaybackState(): Promise<any> {
+  // Updated to return a Promise of PlaybackState
+  async getPlaybackState(): Promise<PlaybackState> {
     const response = await fetch('https://api.spotify.com/v1/me/player', {
       headers: {
         'Authorization': `Bearer ${this.accessToken}`
@@ -57,27 +81,26 @@ export class SpotifyService {
     return response.json();
   }
 
-// Method to play a song on Spotify
-async playSong(songUri: string): Promise<any> {
-  const response = await fetch('https://api.spotify.com/v1/me/player/play', {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${this.accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ uris: [songUri] }),
-  });
-  return response.json();
-}
+  // Method to play a song on Spotify
+  async playSong(songUri: string): Promise<void> { // No return value expected
+    const response = await fetch('https://api.spotify.com/v1/me/player/play', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ uris: [songUri] }),
+    });
+    return response.json();
+  }
 
-// Pause playback
-async pausePlayback(): Promise<any> {
-  const response = await fetch('https://api.spotify.com/v1/me/player/pause', {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${this.accessToken}`,
-    },
-  });
-  return response;
-}
+  // Pause playback (no return value expected)
+  async pausePlayback(): Promise<void> {
+    await fetch('https://api.spotify.com/v1/me/player/pause', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+  }
 }
