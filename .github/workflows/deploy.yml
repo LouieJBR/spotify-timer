@@ -16,20 +16,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-            node-version: '20.17.0'
+          node-version: '20.17.0'
 
       - name: Install dependencies
-        working-directory: ./spotify-timer-frontend  # Set correct folder
+        working-directory: ./spotify-timer-frontend
         run: npm install
 
-      - name: Install Angular CLI
-        working-directory: ./spotify-timer-frontend  # Set correct folder
-        run: npm install -g @angular/cli
-
       - name: Build the project
-        working-directory: ./spotify-timer-frontend  # Set correct folder
-        run: ng build --output-path=dist/spotify-timer-frontend --base-href /spotfy-timer-frontend/
+        working-directory: ./spotify-timer-frontend
+        run: ng build --output-path=dist/spotify-timer-frontend/browser --base-href /spotify-timer-frontend/
+
+      - name: Clean cached gh-pages
+        run: rm -rf ./node_modules/.cache/gh-pages/
 
       - name: Deploy to GitHub Pages
-        working-directory: ./spotify-timer-frontend  # Set correct folder
-        run: npx angular-cli-ghpages --dir=dist/spotify-timer-frontend/browser
+        working-directory: ./spotify-timer-frontend
+        run: npx angular-cli-ghpages --dir=dist/spotify-timer-frontend/browser --no-silent
