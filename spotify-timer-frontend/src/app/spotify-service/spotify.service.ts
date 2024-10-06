@@ -71,14 +71,23 @@ export class SpotifyService {
     }).then(response => response.json());
   }
 
-  async getUserPlaylists(): Promise<SpotifyUser> {
-    return fetch('https://api.spotify.com/v1/me/playlists', {
+  async getUserPlaylists(): Promise<string[]> {
+    const response = await fetch('https://api.spotify.com/v1/me/playlists', {
       headers: {
         'Authorization': `Bearer ${this.accessToken}`
       }
-    }).then(response => response.json());
-  }
+    });
   
+    const data = await response.json();
+  
+    // Check if the response is valid and has items
+    if (data && data.items) {
+      return data.items.map((playlist: { name: string }) => playlist.name);
+    } else {
+      return []; // Return empty array if no playlists found
+    }
+  }
+
   // Updated to return a Promise of PlaybackState
   async getPlaybackState(): Promise<PlaybackState> {
     const response = await fetch('https://api.spotify.com/v1/me/player', {

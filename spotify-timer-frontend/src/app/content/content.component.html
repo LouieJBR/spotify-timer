@@ -4,13 +4,9 @@
     <app-login></app-login>
     <app-timer></app-timer>
     <div class="dropdown-container">
-        <label for="cars">Choose a playlist:</label>
-
-        <select name="playlists" id="playlists">
-        <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
+        <label for="playlists">Choose a playlist:</label>
+        <select class="playlist-select" name="playlists" id="playlists">
+            <option *ngFor="let playlist of playlists" [value]="playlist">{{ playlist }}</option>
         </select> 
     </div>
 </div>

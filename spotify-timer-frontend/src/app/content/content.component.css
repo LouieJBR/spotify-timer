@@ -35,3 +35,9 @@
     border-radius: 15px;
     box-shadow: 0 0 20px#0c192c; /* Glowing effect */
   }
+
+  .playlist-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

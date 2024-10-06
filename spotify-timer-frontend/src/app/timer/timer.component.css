@@ -18,7 +18,7 @@
     border-radius: 10px; /* Slightly rounded corners */
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.7); /* Glowing effect */
     margin-bottom: 20px; /* Space between display and input */
-    width: 300px; /* Set a fixed width for consistency */
+    width: 100%; /* Set a fixed width for consistency */
     text-align: center; /* Center the text */
 }
 .input-container {
