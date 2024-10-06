@@ -22,6 +22,10 @@ jobs:
         working-directory: ./spotify-timer-frontend
         run: npm install
 
+      - name: Install Angular CLI
+        working-directory: ./spotify-timer-frontend
+        run: npm install -g @angular/cli
+
       - name: Build the project
         working-directory: ./spotify-timer-frontend
         run: ng build --output-path=dist/spotify-timer-frontend/browser --base-href /spotify-timer-frontend/
