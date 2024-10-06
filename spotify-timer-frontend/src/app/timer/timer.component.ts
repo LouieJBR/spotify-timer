@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class TimerComponent {
   displayTime = '00:00'; // Displayed timer time
   totalSeconds = 0; // Total seconds in timer
-  timerInterval: any; // To hold the timer interval
+  timerInterval: ReturnType<typeof setInterval> | undefined; // Type for cross-environment compatibility
   isRunning = false; // To track if the timer is running
 
   // Update time based on user input
