@@ -29,11 +29,12 @@
     height: 40px;
     text-align: center;
     font-size: large;
+    border: #1ED760 solid 4px;
     margin: 10px 0; /* Increased space between buttons */
     background-color: #1ED760; /* Button color */
     color: black; /* Button text color */
     border-radius: 15px;
-    box-shadow: 0 0 20px#0c192c; /* Glowing effect */
+    box-shadow: 0 4px 20px#0c192c; /* Glowing effect */
   }
 
   .playlist-select {

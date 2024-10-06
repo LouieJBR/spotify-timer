@@ -42,6 +42,13 @@ input[type="text"] {
     outline: none; /* Remove outline on focus */
 }
 
+@media (max-width: 600px) {
+    input[type="text"] {
+        font-size: 16px; /* Smaller font size for small screens */
+        padding: 8px; /* Less padding */
+    }
+}
+
 input[type="text"]:focus {
     border-color: #FFFFFF; /* Change border on focus */
 }
@@ -68,11 +75,12 @@ button:hover {
     display: flex; /* Use flexbox for horizontal alignment */
     justify-content: space-between; /* Space between buttons */
     width: 100%; /* Full width of the timer container */
+    flex-wrap: wrap;
 }
 
 .button-container button {
     flex: 1; /* Allow buttons to grow equally */
-    margin: 0 5px; /* Add margin between buttons */
+    margin: 5px 5px; /* Add margin between buttons */
     padding: 10px; /* Padding for button */
     background-color: #1ED760; /* Button color */
     color: black; /* Button text color */
@@ -82,6 +90,7 @@ button:hover {
     font-family: 'Gotham', cursive; /* A pixelated font */
     font-size: 20px; /* Button font size */
     transition: background-color 0.3s; /* Transition effect */
+    
 }
 
 .button-container button:hover {
