@@ -1,0 +1,29 @@
+.login-container{
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    align-items: center; /* Center the button vertically */
+    height: 100%; /* Fill the parent container's height */
+    margin: 10px; /* Add some padding to the button */
+  }
+
+.login-container button {
+background-color: #1ED760; /* Use the primary green color */
+color: #0c192c;/* White text color for contrast */
+border: none; /* Remove default border */
+border-radius: 25px; /* Create pill shape */
+padding: 10px 20px; /* Padding for spacing */
+font-size: 20px; /* Font size */
+cursor: pointer; /* Change cursor to pointer on hover */
+box-shadow: 0 0 5px rgba(76, 175, 80, 0.5), 0 0 20px rgba(76, 175, 80, 0.4); /* Slight glow effect */
+transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+}
+
+.login-container button:hover  {
+background-color: #81c784; /* Change to the secondary green on hover */
+box-shadow: 0 0 15px rgba(129, 199, 132, 0.6), 0 0 30px rgba(129, 199, 132, 0.5); /* Enhanced glow on hover */
+}
+  
+.usernameDisplay {
+    font-weight: bold;
+    color: #0c192c
+  }

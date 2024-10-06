@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+*
+{ 
+  margin: 0;
+  padding: 0%;
+  box-sizing: border-box;
+  font-family: "Gotham";
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+body
+{
+  min-height: 100vh;
+  background: #0c192c;
+}
+
+@font-face {
+  font-family: "Gotham";
+  src: local("Gotham"),
+       url(./app/assets/fonts/Gotham-Font/GothamMedium.ttf) format("truetype"); /* Add TTF as a fallback */
+  font-weight: normal; /* Adjust if you have different weights */
+  font-style: normal; /* Adjust if you have different styles */
+}
+
+@font-face {
+  font-family: "Gotham";
+  src: local("Gotham-Bold"),
+       url(./app/assets/fonts/Gotham-Font/GothamBold.ttf) format("truetype");
+  font-weight: bold; /* Set bold weight */
+  font-style: normal; /* Adjust if you have different styles */
+}

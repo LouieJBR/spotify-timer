@@ -10,10 +10,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.17.0'
-      - run: npm install
-      - run: npm run lint
+
+      # Change the working directory for npm commands to the frontend folder
+      - name: Install dependencies
+        working-directory: ./spotify-timer-frontend  # Set correct folder
+        run: npm install
+
+      - name: Run lint
+        working-directory: ./spotify-timer-frontend  # Same folder for linting
+        run: npm run lint

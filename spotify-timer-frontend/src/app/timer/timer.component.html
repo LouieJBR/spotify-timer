@@ -1,0 +1,13 @@
+<div class="timer-container">
+    <div class="timer-display" contenteditable="true" (input)="updateTime($event)" (keydown)="handleKeydown($event)">
+        {{ displayTime }}
+    </div> <!-- Timer display, now editable -->
+
+    <div class="button-container">
+        <button (click)="incrementTime(30)">+30s</button>
+        <button (click)="decrementTime(30)">-30s</button>
+        <button class="start-button" (click)="startTimer()">Start</button> <!-- Start button -->
+            <button class="stop-button" (click)="stopTimer()">Stop</button> <!-- Stop button -->
+            <button class="reset-button" (click)="resetTimer()">Clear</button> <!-- Reset button -->
+</div>    </div>
+

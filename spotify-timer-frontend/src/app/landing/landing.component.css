@@ -1,0 +1,50 @@
+.landing-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex; /* Enable flexbox */
+  align-items: flex-end; /* Align bubbles to the bottom */
+  justify-content: center; /* Center bubbles horizontally */
+}
+
+.bubbles {
+  position: relative;
+  display: flex;
+  margin: 0;
+  width: 100%; /* Take full width for responsive behavior */
+  flex-wrap: wrap; /* Allow wrapping to the next line if needed */
+  justify-content: center; /* Center bubbles */
+}
+
+.bubbles span {
+  position: relative;
+  width: 3vw; /* Set width to a smaller percentage of viewport width */
+  height: 3vw; /* Set height to match width */
+  min-width: 20px; /* Minimum width to prevent bubbles from getting too small */
+  min-height: 20px; /* Minimum height to prevent bubbles from getting too small */
+  background: #4caf50; /* Primary bubble color */
+  margin: 0 4px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 10px rgba(76, 175, 80, 0.4),
+              0 0 50px rgba(76, 175, 80, 0.6),
+              0 0 100px rgba(76, 175, 80, 0.8);
+  animation: animate 15s linear infinite;
+  animation-duration: calc(120s / var(--i));
+}
+
+.bubbles span:nth-child(even) {
+  background: #81c784; /* Secondary bubble color */
+  box-shadow: 0 0 0 10px rgba(129, 199, 132, 0.4),
+              0 0 50px rgba(129, 199, 132, 0.6),
+              0 0 100px rgba(129, 199, 132, 0.8);
+}
+
+@keyframes animate {
+  0% {
+    transform: translateY(100vh) scale(0); /* Start from below the viewport */
+  }
+  100% {
+    transform: translateY(-100vh) scale(1); /* Move off the top of the viewport */
+  }
+}
