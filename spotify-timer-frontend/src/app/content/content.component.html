@@ -5,8 +5,9 @@
     <app-timer></app-timer>
     <div class="dropdown-container">
         <label for="playlists">Choose a playlist:</label>
-        <select class="playlist-select" name="playlists" id="playlists">
-            <option *ngFor="let playlist of playlists" [value]="playlist">{{ playlist }}</option>
-        </select> 
+        <select class="playlist-select" name="playlists" id="playlists" (change)="onPlaylistSelect($event)">
+            <option *ngFor="let playlist of playlists" [value]="playlist.id">{{ playlist.name }}</option>
+        </select>        
     </div>
+    <app-current-track [tracks]="selectedPlaylistTracks"></app-current-track>
 </div>

@@ -29,8 +29,9 @@ export class LoginComponent implements OnInit {
   async getUserInfo(): Promise<void> {
     try {
       const userInfo = await this.spotifyService.getUserInfo();
-      this.displayName = userInfo.display_name; // Store the display name
-    } catch (error) {
+      if (userInfo) { // Check if userInfo is not null
+        this.displayName = userInfo.display_name; // Store the display name
+    }    } catch (error) {
       console.error('Error fetching user info:', error);
     }
   }

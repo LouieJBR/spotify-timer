@@ -1,46 +1,44 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
-interface SpotifyUser {
+export interface SpotifyUser {
   display_name: string;
   email: string;
   id: string;
-  // Add other fields as necessary
 }
 
-interface PlaybackState {
+export interface Track {
+  uri: string;
+  name: string;
+  artists: { name: string }[];
+}
+
+export interface PlaybackState {
   is_playing: boolean;
-  item: {
-    name: string;
-    artists: { name: string }[];
-    // Add other fields as necessary
-  };
+  item: Track;
   device: {
     id: string;
     name: string;
-    // Add other fields as necessary
   };
-  // Add other fields as necessary
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotifyService {
-
   private accessToken: string | null = null;
 
-  constructor() { 
+  constructor() {
     this.accessToken = localStorage.getItem('access_token');
   }
 
-  login():void {
+  login(): void {
     const spotifyAuthUrl = 
-    `https://accounts.spotify.com/authorize?client_id=${environment.SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(environment.SPOTIFY_REDIRECT_URI)}&scope=${encodeURIComponent(environment.SPOTIFY_SCOPES)}`;
+      `https://accounts.spotify.com/authorize?client_id=${environment.SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(environment.SPOTIFY_REDIRECT_URI)}&scope=${encodeURIComponent(environment.SPOTIFY_SCOPES)}`;
     window.location.href = spotifyAuthUrl;
   }
 
-  logout():void {
+  logout(): void {
     localStorage.removeItem('access_token');
     window.location.href = 'https://accounts.spotify.com/en/logout';
   }
@@ -55,69 +53,106 @@ export class SpotifyService {
       const params = new URLSearchParams(hash.substring(1));
       const accessToken = params.get('access_token');
       if (accessToken) {
-        // Store the access token
         localStorage.setItem('access_token', accessToken);
         this.accessToken = accessToken;
       }
     }
   }
 
-  // Updated to return a Promise of SpotifyUser
-  getUserInfo(): Promise<SpotifyUser> {
-    return fetch('https://api.spotify.com/v1/me', {
-      headers: {
-        'Authorization': `Bearer ${this.accessToken}`
-      }
-    }).then(response => response.json());
-  }
-
-  async getUserPlaylists(): Promise<string[]> {
-    const response = await fetch('https://api.spotify.com/v1/me/playlists', {
-      headers: {
-        'Authorization': `Bearer ${this.accessToken}`
-      }
-    });
-  
-    const data = await response.json();
-  
-    // Check if the response is valid and has items
-    if (data && data.items) {
-      return data.items.map((playlist: { name: string }) => playlist.name);
-    } else {
-      return []; // Return empty array if no playlists found
+  async getUserInfo(): Promise<SpotifyUser | null> {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/me', {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch user info');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+      return null;
     }
   }
 
-  // Updated to return a Promise of PlaybackState
-  async getPlaybackState(): Promise<PlaybackState> {
-    const response = await fetch('https://api.spotify.com/v1/me/player', {
-      headers: {
-        'Authorization': `Bearer ${this.accessToken}`
-      }
-    });
-    return response.json();
+  async getUserPlaylists(): Promise<{ id: string; name: string }[]> {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/me/playlists', {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch playlists');
+      const data = await response.json();
+      return data.items.map((playlist: { id: string; name: string }) => ({
+        id: playlist.id,
+        name: playlist.name
+      }));
+    } catch (error) {
+      console.error('Error fetching playlists:', error);
+      return [];
+    }
   }
 
-  // Method to play a song on Spotify
-  async playSong(songUri: string): Promise<void> { // No return value expected
-    const response = await fetch('https://api.spotify.com/v1/me/player/play', {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ uris: [songUri] }),
-    });
-    return response.json();
+  async loadTracksFromPlaylist(playlistId: string): Promise<Track[]> {
+    try {
+      const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch playlist tracks');
+      
+      const data = await response.json();
+      return data.items.map((item: any) => ({
+        uri: item.track.uri,
+        name: item.track.name,
+        artists: item.track.artists
+      }));
+    } catch (error) {
+      console.error('Error loading tracks:', error);
+      return []; // Return empty array on error
+    }
+  }
+  async getPlaybackState(): Promise<PlaybackState | null> {
+    try {
+      const response = await fetch('https://api.spotify.com/v1/me/player', {
+        headers: {
+          'Authorization': `Bearer ${this.accessToken}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch playback state');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching playback state:', error);
+      return null;
+    }
   }
 
-  // Pause playback (no return value expected)
+  async playSong(songUri: string): Promise<void> {
+    try {
+      await fetch('https://api.spotify.com/v1/me/player/play', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uris: [songUri] }),
+      });
+    } catch (error) {
+      console.error('Error playing song:', error);
+    }
+  }
+
   async pausePlayback(): Promise<void> {
-    await fetch('https://api.spotify.com/v1/me/player/pause', {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
+    try {
+      await fetch('https://api.spotify.com/v1/me/player/pause', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+    } catch (error) {
+      console.error('Error pausing playback:', error);
+    }
   }
 }
