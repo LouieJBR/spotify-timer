@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/spotify-timer-frontend",
+            "outputPath": "dist/spotify-timer-frontend/browser",
             "baseHref": "/spotify-timer-frontend/",
             "index": "src/index.html",
             "browser": "src/main.ts",
