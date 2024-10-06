@@ -1,38 +1,38 @@
-name: Deploy to GitHub Pages
+# name: Deploy to GitHub Pages
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout the repository
+#         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.17.0'
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '20.17.0'
 
-      - name: Install dependencies
-        working-directory: ./spotify-timer-frontend
-        run: npm install
+#       - name: Install dependencies
+#         working-directory: ./spotify-timer-frontend
+#         run: npm install
 
-      - name: Install Angular CLI
-        working-directory: ./spotify-timer-frontend
-        run: npm install -g @angular/cli
+#       - name: Install Angular CLI
+#         working-directory: ./spotify-timer-frontend
+#         run: npm install -g @angular/cli
 
-      - name: Build the project
-        working-directory: ./spotify-timer-frontend
-        run: ng build --output-path=dist/spotify-timer-frontend/browser --base-href /spotify-timer-frontend/
+#       - name: Build the project
+#         working-directory: ./spotify-timer-frontend
+#         run: ng build --output-path=dist/spotify-timer-frontend/browser --base-href /spotify-timer-frontend/
 
-      - name: Clean cached gh-pages
-        run: rm -rf ./node_modules/.cache/gh-pages/
+#       - name: Clean cached gh-pages
+#         run: rm -rf ./node_modules/.cache/gh-pages/
 
-      - name: Deploy to GitHub Pages
-        working-directory: ./spotify-timer-frontend
-        run: npx angular-cli-ghpages --dir=dist/spotify-timer-frontend/browser --no-silent
+#       - name: Deploy to GitHub Pages
+#         working-directory: ./spotify-timer-frontend
+#         run: npx angular-cli-ghpages --dir=dist/spotify-timer-frontend/browser --no-silent
