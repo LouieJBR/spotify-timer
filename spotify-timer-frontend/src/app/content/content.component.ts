@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TimerComponent } from '../timer/timer.component';
 import { LoginComponent } from '../login/login.component';
 import { SpotifyService } from '../spotify-service/spotify.service';
 import { NgFor, NgIf } from '@angular/common';
 import { Track } from '../spotify-service/spotify.service';
+import { PlaybackComponent } from '../playback/playback.component';
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [LoginComponent, TimerComponent, NgFor, NgIf], // Remove CurrentTrackComponent from imports
+  imports: [LoginComponent, TimerComponent, NgFor, NgIf, PlaybackComponent], // Remove CurrentTrackComponent from imports
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent implements OnInit {
+export class ContentComponent {
   playlists: { id: string; name: string }[] = [];
   selectedPlaylistTracks: Track[] = []; // To store the selected playlist tracks
-  currentTrackIndex = -1; // Track index
+  currentTrackIndex: number = -1; // Track index
   currentTrack: Track | null = null; // Current track information
-  isPlaying = false; // Playback state
+  isPlaying: boolean = false; // Playback state
 
   constructor(private spotifyService: SpotifyService) {}
 
@@ -38,14 +39,12 @@ export class ContentComponent implements OnInit {
   async onPlaylistSelect(event: Event) {
     const target = event.target as HTMLSelectElement; // Cast the event target to HTMLSelectElement
     const selectedValue = target.value; // Get the selected value
-    console.log(selectedValue);
     // Now load the tracks for the selected playlist
     await this.loadTracksFromSelectedPlaylists(selectedValue);
   }
 
   async loadTracksFromSelectedPlaylists(selectedValue: string) {
     this.selectedPlaylistTracks = await this.spotifyService.loadTracksFromPlaylist(selectedValue);
-    console.log("Loaded Playlist Tracks:", this.selectedPlaylistTracks);
     if (this.selectedPlaylistTracks.length > 0) {
       this.loadNextTrack(); // Load the first track if available
     }

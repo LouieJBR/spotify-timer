@@ -131,19 +131,34 @@ export class SpotifyService {
   }
 
   async playSong(songUri: string): Promise<void> {
+    const token = this.getToken();
+    if (!token) {
+      this.login();
+      return;
+    }
+    
     try {
-      await fetch('https://api.spotify.com/v1/me/player/play', {
+      const response = await fetch('https://api.spotify.com/v1/me/player/play', {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${this.accessToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ uris: [songUri] }),
       });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error playing song:', errorData);
+        if (errorData.status === 401) {
+          this.login(); // Token expired or invalid, redirect to login
+        }
+      }
     } catch (error) {
       console.error('Error playing song:', error);
     }
   }
+  
 
   async pausePlayback(): Promise<void> {
     try {
