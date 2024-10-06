@@ -25,8 +25,8 @@ jobs:
       - name: Build the project
         working-directory: ./spotify-timer-frontend  # Set correct folder
 
-        run: ng build --output-path=dist/spotify-timer --base-href /spotfy-timer/
+        run: ng build --output-path=dist/spotify-timer-frontend --base-href /spotfy-timer-frontend/
 
       - name: Deploy to GitHub Pages
         working-directory: ./spotify-timer-frontend  # Set correct folder
-        run: npx angular-cli-ghpages --dir=dist/spotify-timer
+        run: npx angular-cli-ghpages --dir=dist/spotify-timer-frontend
