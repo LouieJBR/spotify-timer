@@ -15,5 +15,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20.17.0'
+      - name: Change directory to frontend (if package.json is inside a subfolder)
+        run: cd ./spotify-timer-frontend
       - run: npm install
       - run: npm run lint
