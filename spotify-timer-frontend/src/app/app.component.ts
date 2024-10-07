@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { LandingComponent } from './landing/landing.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LandingComponent],
+  imports: [RouterOutlet],
   template: `
-    <router-outlet></router-outlet>
-    <app-landing></app-landing>
-  `,
+    <router-outlet></router-outlet>`,
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
