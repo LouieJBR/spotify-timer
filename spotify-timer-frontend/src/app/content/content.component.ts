@@ -4,12 +4,11 @@ import { LoginComponent } from '../login/login.component';
 import { SpotifyService } from '../spotify-service/spotify.service';
 import { NgFor, NgIf } from '@angular/common';
 import { Track } from '../spotify-service/spotify.service';
-import { PlaybackComponent } from '../playback/playback.component';
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [LoginComponent, TimerComponent, NgFor, NgIf, PlaybackComponent],
+  imports: [LoginComponent, TimerComponent, NgFor, NgIf],
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
@@ -24,6 +23,13 @@ export class ContentComponent {
 
   ngOnInit(): void {
     this.loadUserPlaylists();
+    this.setupTrackEndListener();
+  }
+
+  setupTrackEndListener() {
+    this.spotifyService.onTrackEnd(() => {
+      this.loadNextTrack();
+    });
   }
 
   async loadUserPlaylists() {

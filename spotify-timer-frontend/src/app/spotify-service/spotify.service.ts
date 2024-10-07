@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
+declare const Spotify: any;
+
 export interface SpotifyUser {
   display_name: string;
   email: string;
@@ -27,6 +29,8 @@ export interface PlaybackState {
   providedIn: 'root'
 })
 export class SpotifyService {
+  private player: any;
+
   private accessToken: string | null = null;
 
   constructor() {
@@ -128,6 +132,15 @@ export class SpotifyService {
       console.error('Error fetching playback state:', error);
       return null;
     }
+  }
+
+  onTrackEnd(callback: () => void) {
+    this.player.addListener('player_state_changed', (state: any) => {
+      if (state && state.paused && state.position === 0 && !state.loading) {
+        // Track ended
+        callback();
+      }
+    });
   }
 
   async playSong(songUri: string): Promise<void> {
