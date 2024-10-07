@@ -3,4 +3,22 @@
     <hr>
     <app-login></app-login>
     <app-timer></app-timer>
-</div>
+    <div class="dropdown-container">
+        <label for="playlists">Choose a playlist:</label>
+        <select class="playlist-select" name="playlists" id="playlists" (change)="onPlaylistSelect($event)">
+            <option *ngFor="let playlist of playlists" [value]="playlist.id">{{ playlist.name }}</option>
+        </select>        
+    </div>
+    <div class="glass-container">
+        <div class="track-container"> 
+            <h1>{{ currentTrack?.name }}</h1>
+            <h2>{{ currentTrackAlbum }}</h2>
+            <h3>{{ currentTrackArtists }}</h3>
+        </div>    
+    </div>
+    <div class="playback-controls">
+            <button (click)="startPlayback()" [disabled]="selectedPlaylistTracks.length === 0 || isPlaying">Start</button>
+            <button (click)="resumePlayback()" [disabled]="selectedPlaylistTracks.length === 0">Resume</button>
+            <button (click)="pausePlayback()" [disabled]="selectedPlaylistTracks.length === 0">Stop</button>
+    </div>  
+    </div>
