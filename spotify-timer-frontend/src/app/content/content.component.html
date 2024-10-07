@@ -16,6 +16,9 @@
             <h3>{{ currentTrackArtists }}</h3>
         </div>    
     </div>
-        <button (click)="startPlayback()" [disabled]="selectedPlaylistTracks.length === 0">Start Playback</button>
-        <button (click)="pausePlayback()" [disabled]="selectedPlaylistTracks.length === 0">Stop Playback</button>
-</div>
+    <div class="playback-controls">
+            <button (click)="startPlayback()" [disabled]="selectedPlaylistTracks.length === 0 || isPlaying">Start</button>
+            <button (click)="resumePlayback()" [disabled]="selectedPlaylistTracks.length === 0">Resume</button>
+            <button (click)="pausePlayback()" [disabled]="selectedPlaylistTracks.length === 0">Stop</button>
+    </div>  
+    </div>

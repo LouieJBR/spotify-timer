@@ -159,6 +159,18 @@ export class SpotifyService {
     }
   }
   
+  async resumePlayback(): Promise<void> {
+    try {
+      await fetch('https://api.spotify.com/v1/me/player/play', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+    } catch (error) {
+      console.error('Error pausing playback:', error);
+    }
+  }
 
   async pausePlayback(): Promise<void> {
     try {

@@ -70,3 +70,26 @@
 .track-container h2 {
     color: #81c784;
 }
+
+.playback-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  margin: 10px 10px; /* Increased space between buttons */
+  background-color: #1ED760; /* Button color */
+  color: black; /* Button text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners for button */
+  padding: 10px 20px; /* Padding for button */
+  cursor: pointer; /* Change cursor on hover */
+  font-family: 'Gotham', sans-serif; /* A pixelated font */
+  font-size: 20px; /* Button font size */
+  transition: background-color 0.3s; /* Transition effect */
+  width: 100%; /* Button takes full width of its container */
+}
+
+button:hover {
+  background-color: #1ED76044; /* Change color on hover */
+}

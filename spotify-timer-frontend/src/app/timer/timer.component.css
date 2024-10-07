@@ -89,8 +89,7 @@ button:hover {
     cursor: pointer; /* Change cursor on hover */
     font-family: 'Gotham', cursive; /* A pixelated font */
     font-size: 20px; /* Button font size */
-    transition: background-color 0.3s; /* Transition effect */
-    
+    transition: background-color 0.3s; /* Transition effect */ 
 }
 
 .button-container button:hover {

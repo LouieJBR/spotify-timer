@@ -72,6 +72,11 @@ export class ContentComponent {
     }
   }
 
+  async resumePlayback() {
+    await this.spotifyService.resumePlayback();
+    this.isPlaying = true;
+  }
+
   async pausePlayback() {
     await this.spotifyService.pausePlayback();
     this.isPlaying = false;
